@@ -1,4 +1,4 @@
-angular.module('ngTokenField', []).directive('ngTokenField', function ($parse) {
+angular.module('ngTokenField', []).directive('ngTokenField', function ($parse, $timeout) {
 		return {
 	        restrict: 'E',
 	        scope: {
@@ -15,7 +15,16 @@ angular.module('ngTokenField', []).directive('ngTokenField', function ($parse) {
 					var _tokenField;
 					var _input;
 					var _SEPARATOR = ",";
-
+					var _triggeredUpdate = false;
+					var _unbindWatcher = scope.$watch('ngModel', function(newTokens, oldTokens) {
+						console.log('watch:'+newTokens);
+						if (newTokens && _triggeredUpdate == false) {
+							deleteAllTokens();
+							createTokens(newTokens);
+							togglePlaceholder();
+						}
+					}, true);
+			
 					_tokenField = element.find('.ng-token-field');  
 					_input = _tokenField.find('input');
 	
@@ -123,7 +132,7 @@ angular.module('ngTokenField', []).directive('ngTokenField', function ($parse) {
 				                resizeInput(tokenWrapper);
 							}
 						}
-						
+							
 						updateModel();
 					}
 				
@@ -169,6 +178,20 @@ angular.module('ngTokenField', []).directive('ngTokenField', function ($parse) {
 				            _input.css('width',(newWidth/_tokenField.width())*100+"%");
 				        }
 				    }
+					
+					/**
+					 * Removes all tokens
+					 *
+					 *
+					 *
+					 */
+					function deleteAllTokens() {
+						var tokens = _tokenField.find('.token-wrapper');
+				        for (var i=0; i<tokens.length; i++) {
+				            tokens[i].remove();
+				        } 
+						updateModel();
+					}
 				    
 				    ////////////////////////////////////////////////
 				    // PUBLIC METHODS
@@ -191,9 +214,14 @@ angular.module('ngTokenField', []).directive('ngTokenField', function ($parse) {
 				    }
 					
 					function updateModel() {
-						scope.$apply(function() {
-						  scope.ngModel = getContent();
+						$timeout(function() {
+							_triggeredUpdate = true;
+							scope.$apply(function() {
+							  scope.ngModel = getContent();
+							});
+							_triggeredUpdate = false;
 						});
+
 					}
 					
 					/**
