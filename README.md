@@ -42,4 +42,16 @@ You can also define a validator function that validates the text of each token a
 });
 ```
 
+#### Install Using bower
+Add `ng-token-field` as a dependency to your project within your `bower.json` file
+```
+  "dependencies": {
+	"ng-token-field": "lucaslouca/ng-token-field"
+  }
+```
+
+Then do a `bower install` in your project directory:
+```
+$ bower install
+```
 
