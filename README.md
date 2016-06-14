@@ -7,6 +7,8 @@ Angular token input directive. A token input box that automatically creates toke
 
 ## How to use
 
+This directive requires <a href="https://jquery.com/" target="_blank">JQuery</a>
+
 Include the stylesheet and javascript files:
 ```html
 <link rel="stylesheet" href="ng-token-field.css"> 
