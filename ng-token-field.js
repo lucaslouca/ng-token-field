@@ -17,7 +17,6 @@ angular.module('ngTokenField', []).directive('ngTokenField', function ($parse, $
 					var _SEPARATOR = ",";
 					var _triggeredUpdate = false;
 					var _unbindWatcher = scope.$watch('ngModel', function(newTokens, oldTokens) {
-						console.log('watch:'+newTokens);
 						if (newTokens && _triggeredUpdate == false) {
 							deleteAllTokens();
 							createTokens(newTokens);
