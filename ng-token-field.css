@@ -132,3 +132,6 @@
 	background-color: #b71313;
 }
 
+.ng-token-field .ng-token-field-placeholder {
+	color: #E3E3E3;
+}
