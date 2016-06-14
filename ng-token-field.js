@@ -1,4 +1,4 @@
-angular.module('ngTokenField', []).directive('ngTokenField', function () {
+angular.module('ngTokenField', []).directive('ngTokenField', function ($parse) {
 		return {
 	        restrict: 'E',
 	        scope: {
@@ -7,15 +7,15 @@ angular.module('ngTokenField', []).directive('ngTokenField', function () {
 			require : 'ngModel', 
 			scope: {
 			  ngModel: '=?',
-			  placeholder: '@placeholder'
+			  placeholder: '@placeholder',
+			  validator: '&'
 			},
 	        template: '<div class="ng-token-field"><span class="ng-token-field-placeholder">{{placeholder}}</span><input type="text"/></div>',
 			link: function(scope, element, attrs) {
 					var _tokenField;
 					var _input;
 					var _SEPARATOR = ",";
-				    var _validatorFunction = null;
-				    
+
 					_tokenField = element.find('.ng-token-field');  
 					_input = _tokenField.find('input');
 	
@@ -90,7 +90,7 @@ angular.module('ngTokenField', []).directive('ngTokenField', function () {
 								token.addClass("token");
 								
 								// Validate text to see if we should mark the token as valid/invalid
-								if (_validatorFunction != null && _validatorFunction(text)==false) {
+								if (validateValue(text)==false) {
 									token.addClass("invalid");
 								} else {
 									token.addClass("valid");
@@ -212,14 +212,28 @@ angular.module('ngTokenField', []).directive('ngTokenField', function () {
 						}
 					}
 					
+					/**
+					 * Hide placeholder
+					 *
+					 *
+					 */
 					function hidePlaceholder() {
 						var placeholder = element.find('.ng-token-field-placeholder');
 						placeholder.hide();
 					}
 					
+					/**
+					 * Show placeholder
+					 *
+					 *
+					 */
 					function showPlaceholder() {
 						var placeholder = element.find('.ng-token-field-placeholder');
 						placeholder.show();
+					}
+					
+					function validateValue(value) {
+						return scope.validator({text: value});
 					}
 			}
 	}
