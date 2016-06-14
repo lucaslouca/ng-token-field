@@ -18,6 +18,7 @@ You can also define a validator function that validates the text of each token a
 ```javascript
 .controller('MyController', function($scope) {
 	$scope.validator = function(text) {
+		// Check if token text is an email
 		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		return re.test(text);
     };
