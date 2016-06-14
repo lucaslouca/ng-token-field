@@ -6,9 +6,10 @@ angular.module('ngTokenField', []).directive('ngTokenField', function () {
 	        },
 			require : 'ngModel', 
 			scope: {
-			  ngModel: '=?'
+			  ngModel: '=?',
+			  placeholder: '@placeholder'
 			},
-	        template: '<div class="ng-token-field"><input type="text"/></div>',
+	        template: '<div class="ng-token-field"><span class="ng-token-field-placeholder">{{placeholder}}</span><input type="text"/></div>',
 			link: function(scope, element, attrs) {
 					var _tokenField;
 					var _input;
@@ -28,6 +29,7 @@ angular.module('ngTokenField', []).directive('ngTokenField', function () {
 					
 					_input.on('focus', function (event) {
 						_tokenField.addClass("focus");
+						hidePlaceholder();
 					});
 				
 					_input.on('input', function (event) {
@@ -64,7 +66,7 @@ angular.module('ngTokenField', []).directive('ngTokenField', function () {
 						var tokens = value.split(_SEPARATOR);
 						this.value = "";
 						createTokens(tokens);
-						
+						togglePlaceholder();
 					});
 				
 				    ////////////////////////////////////////////////
@@ -122,9 +124,7 @@ angular.module('ngTokenField', []).directive('ngTokenField', function () {
 							}
 						}
 						
-						scope.$apply(function() {
-						  scope.ngModel = getContent();
-						});
+						updateModel();
 					}
 				
 				    ////////////////////////////////////////////////
@@ -149,10 +149,8 @@ angular.module('ngTokenField', []).directive('ngTokenField', function () {
 				        } else {
 				            _input.css('width', 100+"%");
 				        }
-				
-						scope.$apply(function() {
-						  scope.ngModel = getContent();
-						});
+						
+						updateModel();
 				    }
 				    
 				    /**
@@ -191,6 +189,38 @@ angular.module('ngTokenField', []).directive('ngTokenField', function () {
 				        
 				        return content;
 				    }
+					
+					function updateModel() {
+						scope.$apply(function() {
+						  scope.ngModel = getContent();
+						});
+					}
+					
+					/**
+					 * Show/hide placeholder based on whether we have tokens
+					 *
+					 *
+					 */
+					function togglePlaceholder() {
+						var placeholder = element.find('.ng-token-field-placeholder');
+						if (getContent().length == 0) {
+							// no tokens -> show placeholder
+							showPlaceholder();
+						} else {
+							// hide placeholder
+							hidePlaceholder();
+						}
+					}
+					
+					function hidePlaceholder() {
+						var placeholder = element.find('.ng-token-field-placeholder');
+						placeholder.hide();
+					}
+					
+					function showPlaceholder() {
+						var placeholder = element.find('.ng-token-field-placeholder');
+						placeholder.show();
+					}
 			}
 	}
 });
