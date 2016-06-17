@@ -26,7 +26,7 @@ angular.module('MyApp', ['ngTokenField'])...
 #### 4. Add the `<ng-token-field>` element to your DOM
 Add the custom element <ng-token-field> to the HTML file where you want to use and bind it to a property and/or validator function. 
 ```html
-<ng-token-field ng-model="tags" placeholder="Enter comma separated values" validator="validator(text)"></ng-token-field>{{tags}}
+<ng-token-field ng-model="tags" placeholder="Enter comma separated values" validator="validator"></ng-token-field>{{tags}}
 ```
 #### 5 (optional). Add a token text validator
 You can also define a validator function that validates the text of each token and styles it accordingly. Below we define a function `validator` that returns `true` if the text is an email and `false` otherwise.
