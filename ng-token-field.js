@@ -260,7 +260,7 @@ angular.module('ngTokenField', []).directive('ngTokenField', function ($parse, $
 					}
 					
 					function validateValue(value) {
-						return scope.validator({text: value});
+						return scope.validator()(value);
 					}
 			}
 	}
